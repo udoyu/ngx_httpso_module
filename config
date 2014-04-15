@@ -1,0 +1,8 @@
+ngx_addon_name=ngx_http_entry_module
+MOD_SRC=$ngx_addon_dir
+HTTP_MODULES="$HTTP_MODULES ngx_http_entry_module"
+CFLAGS="-g -O0"
+CPPFLAGS="$CPPFLAGS -std=c++11"
+
+NGX_ADDON_SRCS="$NGX_ADDON_SRCS $MOD_SRC/ngx_httpso_entry_module.cpp" 
+CORE_INCS="$CORE_INCS $MOD_SRC"
