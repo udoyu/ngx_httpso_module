@@ -1,4 +1,3 @@
-
 extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
@@ -69,7 +68,8 @@ long httpso_init_handler_add(httpso_init_handler_pt h)
 			malloc(sizeof(httpso_init_handler_pt) * newcapaticy);
 		memset(tmp, 0, sizeof(httpso_init_handler_pt) * newcapaticy);
 		memcpy(tmp, httpso_init_handler_arr.hs, sizeof(httpso_init_handler_pt) * capacity);
-		free(httpso_init_handler_arr.hs);
+		if (httpso_init_handler_arr.hs)
+			free(httpso_init_handler_arr.hs);
 		httpso_init_handler_arr.hs = tmp;
 		httpso_init_handler_arr.capacity = newcapaticy;
 	}
@@ -90,7 +90,8 @@ long httpso_handler_add(const char* name, const size_t name_len,
 			malloc(sizeof(httpso_handler_t) * newcapaticy);
 		memset(tmp, 0, sizeof(httpso_handler_t) * newcapaticy);
 		memcpy(tmp, httpso_handler_add_arr.hs, sizeof(httpso_handler_t) * capacity);
-		free(httpso_handler_add_arr.hs);
+		if (httpso_handler_add_arr.hs)
+			free(httpso_handler_add_arr.hs);
 		httpso_handler_add_arr.hs = tmp;
 		httpso_handler_add_arr.capacity = newcapaticy;
 	}
