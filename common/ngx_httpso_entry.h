@@ -5,14 +5,12 @@
 #ifndef NGX_NGX_HTTPSO_ENTRY_H
 #define	NGX_NGX_HTTPSO_ENTRY_H
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 #include <sys/types.h>
 #include <stdint.h>
 #include <netinet/in.h>
+#include <functional>
+#include <memory>
+#include <thread>
 
 /* */
 typedef intptr_t        httpso_int_t;
@@ -96,18 +94,37 @@ struct ngx_httpso_req_s {
     ngx_httpso_str_t body;
 };
 
+
+/* async work */
+typedef std::function<int(void)> AsyncWorkFunc;
+typedef std::shared_ptr<AsyncWorkFunc> AsyncWorkFuncPtr;
+typedef std::shared_ptr<std::thread> ThreadPtr;
+struct AsyncWorkEntry
+{
+    AsyncWorkFuncPtr  work_call_in_async;
+    AsyncWorkFuncPtr  work_call_timeout;
+    AsyncWorkFuncPtr  complete_call_in_ngx;
+    ngx_httpso_ctx_t *ctx;
+};
+typedef std::shared_ptr<AsyncWorkEntry> AsyncWorkEntryPtr;
+typedef long (*httpso_async_work_add_pt)(AsyncWorkEntryPtr &e);
+
 struct ngx_httpso_ctx_s {
     /* httpso_sessioin array. the slot is init in httpso_load func */
     void                 *request;
     httpso_send_data_pt   send_data;
     ngx_httpso_log_t      httpso_log;
     httpso_uint_t         method;
-    httpso_req_t          httpso_req;      
+    httpso_req_t          httpso_req;
     
     void                 *pool;
     httpso_alloc_pt       palloc;
     httpso_alloc_pt       pcalloc;
     httpso_pfree_pt       pfree;
+
+    httpso_async_work_add_pt               async_work_add;
+    void                                  *async_timeout_ev;
+    void                 *ctx_data;
 };
 
 struct ngx_httpso_cycle_ctx_s {
@@ -130,10 +147,6 @@ typedef struct {
     httpso_load_pt        httpso_load;
     httpso_unload_pt      httpso_unload;
 } ngx_httpso_t;
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

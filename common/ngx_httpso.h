@@ -2,12 +2,13 @@
 #ifndef _HTTPSO_H_
 #define _HTTPSO_H_
 
+#include "ngx_httpso_entry.h"
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
     
-#include "ngx_httpso_entry.h"
 long 
 httpso_load(void *cycle_param, httpso_handler_add_pt add_h, int slot, 
                  ngx_httpso_cycle_ctx_t *cycle_ctx);
