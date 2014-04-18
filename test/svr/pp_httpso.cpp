@@ -11,7 +11,7 @@ static int  async_work_call_timeout(ngx_httpso_ctx_t *ctx);
 static int  async_work_complete_call_in_ngx(ngx_httpso_ctx_t *ctx);
 
 static long init_dummy1 = httpso_handler_add("test", 4, pp_pkg_handler);
-static long init_dummy2 = httpso_handler_add("async_work", sizeof("async_work") - 1, async_work_handler);
+static long init_dummy2 = httpso_handler_add("test_async_work", sizeof("test_async_work") - 1, async_work_handler);
 
 static long 
 pp_pkg_handler_common(ngx_httpso_ctx_t *ctx)

@@ -287,14 +287,14 @@ entry_common_handler(ngx_http_request_t *r, httpso_handler_pt h)
 static void 
 entry_post_handler(ngx_http_request_t *r)
 {
-    httpso_handler_map_t::iterator mit = httpso_handler_map.begin();
-    for (mit; mit != httpso_handler_map.end(); ++mit)
+    httpso_handler_map_t::reverse_iterator rmit = httpso_handler_map.rbegin();
+    for (rmit; rmit != httpso_handler_map.rend(); ++rmit)
     {
-        if (!mit->first.empty() && 
-            ngx_strncasecmp(r->uri.data+1, (u_char*)mit->first.c_str(), 
-                            mit->first.length()) == 0)
+        if (!rmit->first.empty() && 
+            ngx_strncasecmp(r->uri.data+1, (u_char*)rmit->first.c_str(), 
+                            rmit->first.length()) == 0)
         {  
-            entry_common_handler(r, mit->second);
+            entry_common_handler(r, rmit->second);
             break;
         }
     }
@@ -304,14 +304,14 @@ static ngx_int_t
 ngx_httpso_entry_handler(ngx_http_request_t *r)
 {
     httpso_handler_pt h = NULL;
-    httpso_handler_map_t::iterator mit = httpso_handler_map.begin();
-    for (mit; mit != httpso_handler_map.end(); ++mit)
+    httpso_handler_map_t::reverse_iterator rmit = httpso_handler_map.rbegin();
+    for (rmit; rmit != httpso_handler_map.rend(); ++rmit)
     {
-        if (!mit->first.empty() && 
-            ngx_strncasecmp(r->uri.data+1, (u_char*)mit->first.c_str(), 
-                            mit->first.length()) == 0)
+        if (!rmit->first.empty() && 
+            ngx_strncasecmp(r->uri.data+1, (u_char*)rmit->first.c_str(), 
+                            rmit->first.length()) == 0)
         {
-            h = mit->second;   
+            h = rmit->second;   
             break;
         }
     }    
