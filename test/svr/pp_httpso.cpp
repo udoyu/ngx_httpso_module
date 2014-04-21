@@ -13,6 +13,16 @@ static int  async_work_complete_call_in_ngx(ngx_httpso_ctx_t *ctx);
 static long init_dummy1 = httpso_handler_add("test", 4, pp_pkg_handler);
 static long init_dummy2 = httpso_handler_add("test_async_work", sizeof("test_async_work") - 1, async_work_handler);
 
+static void test_init(ngx_httpso_cycle_ctx_t *ctx);
+
+static long init_dummy3 = httpso_init_handler_add(test_init);
+
+static void test_init(ngx_httpso_cycle_ctx_t *ctx)
+{
+	ngx_httpso_log_error(NGX_HTTPSO_LOG_INFO, &ctx->httpso_log, 0, 
+		"httpso_path=%s", (char *)ctx->httpso_path.data);
+}
+
 static long 
 pp_pkg_handler_common(ngx_httpso_ctx_t *ctx)
 {

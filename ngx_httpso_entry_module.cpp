@@ -387,6 +387,9 @@ ngx_httpso_entry_init_process(ngx_cycle_t *cycle)
     {
         return NGX_ERROR;
     }
+    cycle_ctx->httpso_path.data = httpso_path.data;
+    cycle_ctx->httpso_path.len = httpso_path.len;
+
     httpso_httpso_vec_t::iterator vit = httpso_vec.begin();
  
     for (i=0; vit != httpso_vec.end(); ++vit, ++i) {
